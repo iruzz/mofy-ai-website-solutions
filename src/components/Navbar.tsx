@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { href: "#layanan", label: "Layanan" },
-    { href: "#harga", label: "Harga" },
-    { href: "#ai", label: "AI Service" },
-    { href: "#faq", label: "FAQ" },
-    { href: "#kontak", label: "Kontak" },
+    { href: "/portofolio", label: "Portofolio", isRoute: true }, // halaman baru
+    { href: "#layanan", label: "Layanan", isRoute: false },      // section
+    { href: "#harga", label: "Harga", isRoute: false },
+    { href: "#ai", label: "AI Service", isRoute: false },
+    { href: "#kontak", label: "Kontak", isRoute: false },
   ];
 
   return (
