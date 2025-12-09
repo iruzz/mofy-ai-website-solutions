@@ -46,7 +46,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold mb-1">WhatsApp</h3>
-                  <p className="text-muted-foreground">+62 812-3456-7890</p>
+                  <p className="text-muted-foreground">+62 853-3113-2617</p>
                   <p className="text-sm text-muted-foreground">Response time: &lt; 5 menit</p>
                 </div>
               </div>
@@ -68,7 +68,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold mb-1">Lokasi</h3>
-                  <p className="text-muted-foreground">Jakarta, Indonesia</p>
+                  <p className="text-muted-foreground">Surabaya, Indonesia</p>
                   <p className="text-sm text-muted-foreground">Melayani seluruh Indonesia</p>
                 </div>
               </div>
