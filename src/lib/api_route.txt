@@ -1,0 +1,22 @@
+asumsi path:
+
+https://api.domain.com/api
+
+
+Setting
+GET    /profile
+POST   /profile
+PUT    /profile/{id}
+DELETE /profile/{id}
+
+Services
+GET    /layanan
+POST   /layanan
+PUT    /layanan/{id}
+DELETE /layanan/{id}
+
+Portofolio
+GET    /portofolio
+POST   /portofolio
+PUT    /portofolio/{id}
+DELETE /portofolio/{id}
