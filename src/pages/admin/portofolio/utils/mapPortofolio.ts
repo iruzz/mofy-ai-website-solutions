@@ -7,8 +7,9 @@ export interface PortofolioImage {
 export interface Portofolio {
   id: number;
   title: string;
-  client: string;
   deskripsi: string;
+  paket: "umkm" | "profesional" | "premium" | string;
+  fitur_website: string[];
   tanggal: string;
   images: PortofolioImage[];
   cover?: string; // ✅ derived field
@@ -25,8 +26,11 @@ export function mapPortofolio(raw: any): Portofolio {
   return {
     id: raw.id,
     title: raw.title,
-    client: raw.client,
     deskripsi: raw.deskripsi,
+    paket: raw.paket,
+    fitur_website: Array.isArray(raw.fitur_website) 
+      ? raw.fitur_website 
+      : (typeof raw.fitur_website === 'string' ? JSON.parse(raw.fitur_website) : []),
     tanggal: raw.tanggal_projek,
     images: sortedImages,
     cover: sortedImages[0]
