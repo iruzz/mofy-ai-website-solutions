@@ -30,45 +30,52 @@ export default function FiturInput({ value, onChange, disabled = false }: Props)
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div className="flex gap-2">
         <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Ketik fitur (contoh: Responsive Design) lalu Enter"
+          placeholder="Ketik fitur (contoh: Responsive Design) lalu tekan Enter"
           disabled={disabled}
-          className="flex-1 rounded-md bg-zinc-900 border border-zinc-700 p-3 text-sm focus:outline-none focus:border-blue-500 disabled:opacity-50"
+          className="flex-1 rounded-lg bg-white border border-slate-300 p-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent disabled:bg-slate-50 disabled:text-slate-500"
         />
         <button
           type="button"
           onClick={addFitur}
           disabled={disabled || !inputValue.trim()}
-          className="px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+          className="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           + Tambah
         </button>
       </div>
 
       {value.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm text-zinc-400">{value.length} fitur ditambahkan</p>
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-sm text-slate-600">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+            <span className="font-medium">{value.length} fitur ditambahkan</span>
+          </div>
           <div className="flex flex-wrap gap-2">
             {value.map((fitur, index) => (
               <div
                 key={index}
-                className="flex items-center gap-2 bg-blue-900/30 text-blue-300 px-3 py-1 rounded-full text-sm border border-blue-700"
+                className="group flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg text-sm border border-emerald-200 hover:border-emerald-300 transition-colors"
               >
                 <span>{fitur}</span>
                 <button
                   type="button"
                   onClick={() => removeFitur(index)}
                   disabled={disabled}
-                  className="text-blue-400 hover:text-blue-200 disabled:opacity-50 ml-1"
+                  className="text-emerald-600 hover:text-emerald-800 disabled:opacity-50 transition-colors"
                   title="Hapus fitur"
                 >
-                  ✕
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
             ))}
