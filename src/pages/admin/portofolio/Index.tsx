@@ -57,8 +57,8 @@ export default function PortofolioIndex() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Header Section - Sticky */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+      {/* Header Section - Sticky with blur effect */}
+      <div className="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-xs">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
