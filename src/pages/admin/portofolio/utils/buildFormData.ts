@@ -1,31 +1,42 @@
 // src/pages/admin/portofolio/utils/buildFormData.ts
 
-type BuildFormDataPayload = {
+type PortofolioData = {
   title: string;
   deskripsi: string;
-  paket: "umkm" | "profesional" | "premium" | string;
+  paket: string;
   fitur_website: string[];
   tanggal_projek: string;
+  harga_project?: string; // ← Add optional price
   images: File[];
 };
 
-export function buildFormData(payload: BuildFormDataPayload) {
-  const formData = new FormData();
+export function buildFormData(data: PortofolioData): FormData {
+  const fd = new FormData();
 
-  formData.append("title", payload.title);
-  formData.append("deskripsi", payload.deskripsi);
-  formData.append("paket", payload.paket);
-  
-  // Append fitur as JSON string to ensure backend receives the complete array
-  formData.append("fitur_website", JSON.stringify(payload.fitur_website));
-  
-  // Format tanggal ke yyyy-MM-dd (backend expects this format)
-  const dateFormatted = payload.tanggal_projek?.split('T')[0] || payload.tanggal_projek;
-  formData.append("tanggal_projek", dateFormatted);
+  // Basic fields
+  fd.append("title", data.title);
+  fd.append("deskripsi", data.deskripsi);
+  fd.append("paket", data.paket);
+  fd.append("tanggal_projek", data.tanggal_projek);
 
-  payload.images.forEach((file) => {
-    formData.append("images[]", file);
+  // Optional price
+  if (data.harga_project && data.harga_project.trim() !== '') {
+    console.log("Adding harga_project to FormData:", data.harga_project);
+    fd.append("harga_project", data.harga_project);
+  } else {
+    console.log("Harga_project not added (empty or undefined):", data.harga_project);
+  }
+
+  // Fitur website as array - backend expects array
+  // Send each item separately with bracket notation
+  data.fitur_website.forEach((fitur) => {
+    fd.append("fitur_website[]", fitur);
   });
 
-  return formData;
+  // Images - backend expects 'images[]' for array
+  data.images.forEach((file) => {
+    fd.append("images[]", file, file.name);
+  });
+
+  return fd;
 }

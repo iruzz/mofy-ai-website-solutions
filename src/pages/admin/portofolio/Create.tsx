@@ -17,6 +17,7 @@ export default function CreatePortofolio() {
   const [paket, setPaket] = useState<"umkm" | "profesional" | "premium" | "">("");
   const [fitur, setFitur] = useState<string[]>([]);
   const [tanggal, setTanggal] = useState("");
+  const [hargaProject, setHargaProject] = useState<string>(""); // ← Add price state
   const [images, setImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,6 +55,7 @@ export default function CreatePortofolio() {
         paket,
         fitur_website: fitur,
         tanggal_projek: tanggal,
+        harga_project: hargaProject, // ← Add price
         images,
       });
 
@@ -137,8 +139,8 @@ export default function CreatePortofolio() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <div className="bg-white border-b border-slate-200">
+      {/* Header - Sticky with enhanced styling */}
+      <div className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-4xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
@@ -228,6 +230,26 @@ export default function CreatePortofolio() {
                 onChange={(e) => setTanggal(e.target.value)}
                 disabled={loading}
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Harga Project (Optional)
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rp</span>
+                <input
+                  type="number"
+                  className="w-full rounded-lg bg-white border border-slate-300 p-3 pl-10 text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent disabled:bg-slate-50"
+                  placeholder="150000"
+                  value={hargaProject}
+                  onChange={(e) => setHargaProject(e.target.value)}
+                  disabled={loading}
+                />
+              </div>
+              <p className="text-xs text-slate-500 mt-1">
+                Contoh: 150000 untuk Rp 150.000. Kosongkan jika tidak ingin menampilkan harga.
+              </p>
             </div>
           </section>
 

@@ -50,6 +50,7 @@ export default function EditPortofolio() {
           deskripsi: found.deskripsi || "",
           paket: found.paket || "",
           tanggal_projek: found.tanggal_projek ? found.tanggal_projek.split(" ")[0] : "",
+          harga_project: found.harga_project || "", // ← Add price
           fitur_website: Array.isArray(found.fitur_website) 
             ? found.fitur_website 
             : (typeof found.fitur_website === 'string' ? JSON.parse(found.fitur_website) : []),
@@ -104,6 +105,7 @@ export default function EditPortofolio() {
     setError(null);
     try {
       const formData = new FormData();
+      formData.append("_method", "PUT"); // ← Laravel method spoofing
       formData.append("title", data.title);
       formData.append("deskripsi", data.deskripsi);
       formData.append("paket", data.paket);
@@ -111,15 +113,36 @@ export default function EditPortofolio() {
       const dateFormatted = data.tanggal_projek?.split('T')[0] || data.tanggal_projek;
       formData.append("tanggal_projek", dateFormatted);
       
+      // Add price if provided
+      console.log("Edit - harga_project value:", data.harga_project);
+      if (data.harga_project && String(data.harga_project).trim() !== '') {
+        console.log("Edit - Adding harga_project to FormData:", data.harga_project);
+        formData.append("harga_project", String(data.harga_project));
+      } else {
+        console.log("Edit - harga_project NOT added (empty or undefined)");
+      }
+      
+      // Send fitur_website as array (like Create does)
       if (Array.isArray(data.fitur_website)) {
-        formData.append("fitur_website", JSON.stringify(data.fitur_website));
+        data.fitur_website.forEach((fitur) => {
+          formData.append("fitur_website[]", fitur);
+        });
       }
 
-      const response = await api.put(`/admin/portofolio/${id}`, formData, {
+      // Log FormData for debugging
+      console.log("Edit - FormData entries:");
+      for (let [key, value] of formData.entries()) {
+        console.log(`  ${key}:`, value);
+      }
+
+      // Use POST instead of PUT for FormData
+      const response = await api.post(`/admin/portofolio/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      console.log("Edit - Response:", response.status, response.data);
 
       if (response.status === 200 || response.status === 201) {
         toast({
@@ -127,33 +150,12 @@ export default function EditPortofolio() {
           description: "Info portofolio berhasil diupdate",
         });
         
-        setTimeout(() => {
-          api.get("/admin/portofolio")
-            .then((res) => {
-              const list = res.data?.data ?? [];
-              const found = list.find((p: any) => String(p.id) === String(id));
-              
-              if (found) {
-                const normalizedData = {
-                  title: found.title || "",
-                  deskripsi: found.deskripsi || "",
-                  paket: found.paket || "",
-                  tanggal_projek: found.tanggal_projek ? found.tanggal_projek.split(" ")[0] : "",
-                  fitur_website: Array.isArray(found.fitur_website) 
-                    ? found.fitur_website 
-                    : (typeof found.fitur_website === 'string' ? JSON.parse(found.fitur_website) : []),
-                };
-                
-                setData(normalizedData);
-                toast({
-                  title: "✅ Tersimpan",
-                  description: "Data portofolio berhasil disimpan ke database",
-                });
-              }
-            });
-        }, 500);
+        // Navigate directly to portfolio list
+        navigate("/admin/portofolio");
       }
     } catch (err: any) {
+      console.error("Edit - Error:", err);
+      console.error("Edit - Error response:", err.response?.data);
       const msg = err.response?.data?.message || err.message || "Gagal update info portofolio";
       setError(`Error: ${msg}`);
       toast({
@@ -221,7 +223,8 @@ export default function EditPortofolio() {
         description: "Gambar berhasil diupload",
       });
       
-      setTimeout(() => location.reload(), 1000);
+      // Navigate to portfolio list
+      navigate("/admin/portofolio");
     } catch (err: any) {
       console.error("Upload error:", err);
       console.error("Error response:", err.response?.data);
@@ -309,8 +312,8 @@ export default function EditPortofolio() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <div className="bg-white border-b border-slate-200">
+      {/* Header - Sticky */}
+      <div className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-5xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
@@ -398,6 +401,24 @@ export default function EditPortofolio() {
               onChange={(e) => setData({ ...data, tanggal_projek: e.target.value })}
               disabled={loading}
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Harga Project (Optional)</label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rp</span>
+              <input
+                type="number"
+                className="w-full p-3 pl-10 bg-white border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent disabled:bg-slate-50 disabled:text-slate-500"
+                placeholder="150000"
+                value={data.harga_project}
+                onChange={(e) => setData({ ...data, harga_project: e.target.value })}
+                disabled={loading}
+              />
+            </div>
+            <p className="text-xs text-slate-500 mt-1">
+              Contoh: 150000 untuk Rp 150.000. Kosongkan jika tidak ingin menampilkan harga.
+            </p>
           </div>
 
           <button

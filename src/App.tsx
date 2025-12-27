@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Portofolio from "./pages/Portofolio"; 
+import PortfolioDetail from '@/pages/PortofolioDetail';
+
 
 // ADMIN LAYOUT & PAGES  
 import { AdminLayout } from "./components/admin/AdminLayout";
@@ -37,6 +39,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/portofolio" element={<Portofolio />} />
+          <Route path="/portfolio/:id" element={<PortfolioDetail />} />
+        
 
           {/* Admin Routes */}
           <Route element={<AdminLayout />}>
