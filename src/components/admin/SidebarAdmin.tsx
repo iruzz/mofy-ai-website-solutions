@@ -15,28 +15,30 @@ export const SidebarAdmin = () => {
         icon={LayoutDashboard} 
         label="Dashboard" 
         to="/dashboard" 
+        animation="slide" // Move box
       />
 
       <SidebarItem 
         icon={Briefcase} 
-        label="Portfolio Admin" 
+        label="Portfolio" 
         to="/admin/portofolio" 
+        animation="slide" // Move & Color
       />
 
       <SidebarItem 
         icon={Server} 
         label="Services" 
         to="/admin/services" 
+        animation="color" // Color up
       />
 
       <SidebarItem 
         icon={Settings} 
         label="Settings" 
         to="/admin/settings" 
+        animation="rotate" // Rotate full
       />
 
     </SidebarRoot>
   );
 };
-
-// kalo mau nambah halaman gitu aja. ko cuman boleh tambahin halamn kayak template di atas kecuali JANGAN KO EDIT BENTUK YANG SUDAH ADA ❗🛑
